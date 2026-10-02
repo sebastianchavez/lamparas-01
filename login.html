@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Iniciar sesión · Lumio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#f59e0b", "primary-dark": "#d97706", accent: "#1c1917", "background-light": "#fdfaf6", "background-dark": "#101922" }, fontFamily: { display: ["Inter", "sans-serif"] }, borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" } } } }
+</script>
+<link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body class="font-display bg-background-light">
+<div id="appHeader"></div>
+
+<main class="px-4 sm:px-6 lg:px-8 py-10">
+  <div class="max-w-md mx-auto">
+    <form id="loginForm" class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <div class="text-center mb-6">
+        <div class="size-12 mx-auto bg-primary rounded-xl flex items-center justify-center text-white mb-3">
+          <span class="material-symbols-outlined fill-1">lightbulb</span>
+        </div>
+        <h1 class="text-2xl font-black">Bienvenido de vuelta</h1>
+        <p class="text-sm text-slate-500 mt-1">¿No tienes cuenta? <a href="registro.html" class="text-primary font-bold hover:underline">Créala aquí</a></p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">Email</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">mail</span>
+            <input required id="loginEmail" type="email" value="cliente@lumio.cl" placeholder="tu@email.cl" class="w-full h-11 pl-10 pr-3 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">Contraseña</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">lock</span>
+            <input required id="loginPass" type="password" value="demo1234" placeholder="••••••••" class="w-full h-11 pl-10 pr-10 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+            <button type="button" id="togglePass" class="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-700">
+              <span class="material-symbols-outlined">visibility</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <label class="flex items-center gap-2 text-sm cursor-pointer">
+            <input type="checkbox" class="rounded text-primary focus:ring-primary"/>
+            <span>Recordarme</span>
+          </label>
+          <a href="recuperar.html" class="text-sm text-primary font-bold hover:underline">¿Olvidaste tu contraseña?</a>
+        </div>
+      </div>
+
+      <button type="submit" class="w-full h-12 mt-6 bg-primary hover:bg-primary-dark text-white font-black rounded-lg flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">login</span>
+        Iniciar sesión
+      </button>
+
+      <div class="relative my-5 text-center">
+        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
+        <span class="relative bg-white px-3 text-xs text-slate-400 uppercase">o continúa con</span>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <button type="button" onclick="toast('Demo: login con Google','info')" class="h-11 border border-slate-200 rounded-lg hover:bg-slate-50 flex items-center justify-center gap-2 text-sm font-bold">
+          <span class="material-symbols-outlined">globe</span>Google
+        </button>
+        <button type="button" onclick="toast('Demo: login con Facebook','info')" class="h-11 border border-slate-200 rounded-lg hover:bg-slate-50 flex items-center justify-center gap-2 text-sm font-bold">
+          <span class="material-symbols-outlined">facebook</span>Facebook
+        </button>
+      </div>
+
+      <div class="mt-6 p-3 bg-amber-50 border border-amber-100 rounded-lg text-xs text-amber-900">
+        <p class="font-black mb-1 flex items-center gap-1"><span class="material-symbols-outlined !text-base">info</span>Cuenta de demostración</p>
+        <p>Email: <strong>cliente@lumio.cl</strong> · Contraseña: <strong>demo1234</strong></p>
+      </div>
+    </form>
+  </div>
+</main>
+
+<div id="appFooter"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+renderHeader("");
+renderFooter();
+
+document.getElementById("togglePass").addEventListener("click", () => {
+  const p = document.getElementById("loginPass");
+  p.type = p.type === "password" ? "text" : "password";
+});
+
+document.getElementById("loginForm").addEventListener("submit", e => {
+  e.preventDefault();
+  toast("¡Bienvenida de vuelta, " + CURRENT_USER.name + "!", "check_circle");
+  setTimeout(() => location.href = "perfil.html", 1200);
+});
+</script>
+</body>
+</html>

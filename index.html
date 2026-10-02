@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lumio — Tienda de Lámparas | Iluminamos tus espacios</title>
+<meta name="description" content="Tienda online de lámparas de mesa, pie, techo, colgantes, LED y decorativas. Diseño, calidez y eficiencia para tu hogar."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#f59e0b", "primary-dark": "#d97706", accent: "#1c1917", "background-light": "#fdfaf6", "background-dark": "#101922" }, fontFamily: { display: ["Inter", "sans-serif"] }, borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" } } } }
+</script>
+<link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body class="font-display bg-background-light">
+<div id="appHeader" data-active="index"></div>
+
+<!-- HERO -->
+<section class="relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+  <div class="absolute inset-0 warm-glow pointer-events-none"></div>
+  <div class="relative px-4 sm:px-6 lg:px-8 py-16 lg:py-24 grid lg:grid-cols-2 gap-10 items-center max-w-7xl mx-auto">
+    <div>
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-black uppercase mb-5">
+        <span class="material-symbols-outlined !text-base fill-1">lightbulb</span>
+        Nueva colección 2026
+      </span>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight text-slate-900 mb-5">
+        Iluminamos cada <span class="text-primary">rincón</span> de tu hogar
+      </h1>
+      <p class="text-lg text-slate-600 mb-8 max-w-xl">
+        Lámparas de mesa, de pie, de techo, colgantes y LED. Diseño cuidado, materiales nobles y eficiencia energética para crear ambientes únicos.
+      </p>
+      <div class="flex flex-wrap gap-3">
+        <a href="productos.html" class="flex items-center gap-2 h-12 px-6 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors">
+          <span class="material-symbols-outlined">storefront</span>
+          Ver catálogo
+        </a>
+        <a href="contacto.html" class="flex items-center gap-2 h-12 px-6 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 font-bold rounded-lg transition-colors">
+          <span class="material-symbols-outlined">chat</span>
+          Contáctanos
+        </a>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mt-10 max-w-md">
+        <div>
+          <p class="text-2xl font-black text-slate-900">+500</p>
+          <p class="text-xs text-slate-500">modelos</p>
+        </div>
+        <div>
+          <p class="text-2xl font-black text-slate-900">15k</p>
+          <p class="text-xs text-slate-500">clientes felices</p>
+        </div>
+        <div>
+          <p class="text-2xl font-black text-slate-900">6 meses</p>
+          <p class="text-xs text-slate-500">de garantía</p>
+        </div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="aspect-square rounded-3xl overflow-hidden shadow-2xl bg-slate-100">
+        <img src="https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=900&q=80" alt="Ambiente iluminado con lámparas" class="w-full h-full object-cover"/>
+      </div>
+      <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-4 hidden sm:flex items-center gap-3 border border-slate-200">
+        <div class="size-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <span class="material-symbols-outlined text-primary fill-1">star</span>
+        </div>
+        <div>
+          <p class="text-sm font-black text-slate-900">4.8 / 5</p>
+          <p class="text-xs text-slate-500">+12.000 reseñas</p>
+        </div>
+      </div>
+      <div class="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl p-4 hidden sm:flex items-center gap-3 border border-slate-200">
+        <div class="size-12 rounded-full bg-green-100 flex items-center justify-center">
+          <span class="material-symbols-outlined text-green-600 fill-1">local_shipping</span>
+        </div>
+        <div>
+          <p class="text-sm font-black text-slate-900">Despacho 24/48h</p>
+          <p class="text-xs text-slate-500">A todo Chile</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORÍAS DESTACADAS -->
+<section class="px-4 sm:px-6 lg:px-8 py-16 max-w-7xl mx-auto">
+  <div class="flex items-end justify-between mb-10">
+    <div>
+      <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mb-2">Explora por categoría</h2>
+      <p class="text-slate-600">Encuentra la lámpara perfecta para cada espacio</p>
+    </div>
+    <a href="productos.html" class="hidden sm:inline-flex items-center gap-1 text-primary font-bold text-sm hover:underline">
+      Ver todas <span class="material-symbols-outlined !text-base">arrow_forward</span>
+    </a>
+  </div>
+  <div id="categoriesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"></div>
+</section>
+
+<!-- PRODUCTOS DESTACADOS -->
+<section class="px-4 sm:px-6 lg:px-8 py-16 bg-gradient-to-b from-amber-50/40 to-transparent">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-end justify-between mb-10">
+      <div>
+        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mb-2">Los más buscados</h2>
+        <p class="text-slate-600">Selección curada por nuestros diseñadores</p>
+      </div>
+      <a href="productos.html" class="hidden sm:inline-flex items-center gap-1 text-primary font-bold text-sm hover:underline">
+        Ver todo <span class="material-symbols-outlined !text-base">arrow_forward</span>
+      </a>
+    </div>
+    <div id="featuredProducts" class="grid grid-cols-2 lg:grid-cols-4 gap-4"></div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="px-4 sm:px-6 lg:px-8 py-16 max-w-7xl mx-auto">
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white border border-slate-200 rounded-xl p-6 text-center">
+      <div class="size-14 mx-auto mb-4 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+        <span class="material-symbols-outlined !text-3xl">local_shipping</span>
+      </div>
+      <h3 class="font-black mb-1">Despacho a todo Chile</h3>
+      <p class="text-sm text-slate-500">24/48h en Santiago y hasta 5 días regiones</p>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-xl p-6 text-center">
+      <div class="size-14 mx-auto mb-4 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+        <span class="material-symbols-outlined !text-3xl">verified_user</span>
+      </div>
+      <h3 class="font-black mb-1">Garantía 6 meses</h3>
+      <p class="text-sm text-slate-500">En todos nuestros productos</p>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-xl p-6 text-center">
+      <div class="size-14 mx-auto mb-4 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+        <span class="material-symbols-outlined !text-3xl">sync</span>
+      </div>
+      <h3 class="font-black mb-1">30 días devolución</h3>
+      <p class="text-sm text-slate-500">Cambios y devoluciones sin costo</p>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-xl p-6 text-center">
+      <div class="size-14 mx-auto mb-4 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+        <span class="material-symbols-outlined !text-3xl">credit_card</span>
+      </div>
+      <h3 class="font-black mb-1">Pago seguro</h3>
+      <p class="text-sm text-slate-500">Webpay, tarjetas y transferencia</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="px-4 sm:px-6 lg:px-8 pb-16 max-w-7xl mx-auto">
+  <div class="bg-accent rounded-3xl px-6 sm:px-10 py-12 grid md:grid-cols-2 gap-8 items-center">
+    <div>
+      <span class="inline-block px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-black uppercase mb-3">Newsletter</span>
+      <h2 class="text-3xl font-black text-white mb-2">Recibe ofertas exclusivas</h2>
+      <p class="text-slate-400">Sé el primero en conocer nuestras nuevas colecciones y descuentos especiales.</p>
+    </div>
+    <form class="flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); toast('¡Gracias por suscribirte!','mark_email_read');">
+      <input type="email" required placeholder="tu@email.cl" class="flex-1 h-12 px-4 rounded-lg bg-slate-800 text-white placeholder-slate-500 border border-slate-700 focus:border-primary focus:ring-0 outline-none"/>
+      <button type="submit" class="h-12 px-6 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">send</span>
+        Suscribirme
+      </button>
+    </form>
+  </div>
+</section>
+
+<div id="appFooter"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+renderHeader("index");
+renderFooter();
+
+const categoryImages = {
+  mesa:        "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&q=80",
+  pie:         "https://images.unsplash.com/photo-1517705008128-361805f42e86?w=400&q=80",
+  techo:       "https://images.unsplash.com/photo-1565538810643-b5bdb714032a?w=400&q=80",
+  colgantes:   "https://images.unsplash.com/photo-1530603907829-659ab6ee0748?w=400&q=80",
+  led:         "https://images.unsplash.com/photo-1558002038-1055907df827?w=400&q=80",
+  decorativas: "https://images.unsplash.com/photo-1602874801006-622f5c0a8cda?w=400&q=80"
+};
+
+document.getElementById("categoriesGrid").innerHTML = CATEGORIES.map(c => `
+  <a href="productos.html?cat=${c.key}" class="group relative aspect-square rounded-2xl overflow-hidden bg-slate-100 shadow-sm hover:shadow-xl transition-all">
+    <img src="${categoryImages[c.key]}" alt="${c.label}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4">
+      <span class="material-symbols-outlined text-primary !text-2xl mb-1">${c.icon}</span>
+      <h3 class="text-white font-black text-sm sm:text-base">${c.label}</h3>
+    </div>
+  </a>
+`).join("");
+
+const featured = PRODUCTS.filter(p => p.featured).slice(0, 8);
+document.getElementById("featuredProducts").innerHTML = featured.map(productCardHTML).join("");
+</script>
+</body>
+</html>

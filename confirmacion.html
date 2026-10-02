@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>¡Pedido confirmado! · Lumio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#f59e0b", "primary-dark": "#d97706", accent: "#1c1917", "background-light": "#fdfaf6", "background-dark": "#101922" }, fontFamily: { display: ["Inter", "sans-serif"] }, borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" } } } }
+</script>
+<link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body class="font-display bg-background-light">
+<div id="appHeader"></div>
+
+<main class="px-4 sm:px-6 lg:px-8 pt-6 pb-16">
+  <!-- Mensaje de éxito -->
+  <section class="text-center mb-8">
+    <div class="size-20 mx-auto mb-4 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+      <span class="material-symbols-outlined !text-5xl fill-1">check_circle</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-black text-slate-900">¡Pedido confirmado!</h1>
+    <p class="text-slate-600 mt-2 max-w-xl mx-auto">Gracias por confiar en Lumio. Enviamos los detalles de tu compra a <span class="font-bold" id="userEmail">tu correo</span>.</p>
+  </section>
+
+  <!-- Comprobante imprimible -->
+  <div class="max-w-3xl mx-auto">
+    <div class="print-area bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+
+      <!-- Encabezado comprobante -->
+      <div class="px-6 sm:px-8 py-6 border-b border-slate-200 flex flex-wrap items-start justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="size-11 bg-primary rounded-lg flex items-center justify-center text-white">
+            <span class="material-symbols-outlined fill-1">lightbulb</span>
+          </div>
+          <div>
+            <h2 class="text-xl font-black">Lumio</h2>
+            <p class="text-xs text-slate-500">Iluminamos tus espacios</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <p class="text-xs font-black uppercase text-slate-500">Comprobante</p>
+          <p class="text-lg font-black" id="orderId">—</p>
+          <p class="text-xs text-slate-500" id="orderDate">—</p>
+        </div>
+      </div>
+
+      <!-- Datos del cliente y envío -->
+      <div class="px-6 sm:px-8 py-6 grid sm:grid-cols-3 gap-6 border-b border-slate-200">
+        <div>
+          <p class="text-xs font-black uppercase text-slate-500 mb-2">Cliente</p>
+          <p class="font-bold text-sm" id="clientName">—</p>
+          <p class="text-xs text-slate-500" id="clientEmail">—</p>
+          <p class="text-xs text-slate-500" id="clientPhone">—</p>
+        </div>
+        <div>
+          <p class="text-xs font-black uppercase text-slate-500 mb-2">Envío</p>
+          <p class="font-bold text-sm capitalize" id="shipType">—</p>
+          <p class="text-xs text-slate-500" id="shipAddr">—</p>
+        </div>
+        <div>
+          <p class="text-xs font-black uppercase text-slate-500 mb-2">Pago</p>
+          <p class="font-bold text-sm capitalize" id="payMethod">—</p>
+          <p class="text-xs text-green-600 font-bold">Pagado</p>
+        </div>
+      </div>
+
+      <!-- Productos -->
+      <div class="px-6 sm:px-8 py-6 border-b border-slate-200">
+        <p class="text-xs font-black uppercase text-slate-500 mb-3">Productos</p>
+        <div id="orderProducts" class="space-y-3"></div>
+      </div>
+
+      <!-- Totales -->
+      <div class="px-6 sm:px-8 py-5 grid sm:grid-cols-[1fr_220px] gap-4 items-end">
+        <div class="text-xs text-slate-500">
+          <p class="mb-1"><span class="font-bold text-slate-900">Tiempo estimado de entrega:</span> 3 a 5 días hábiles.</p>
+          <p>¿Dudas? Contáctanos a <span class="font-bold">contacto@lumio.cl</span> · +56 2 2345 6789.</p>
+        </div>
+        <div class="space-y-1 text-sm">
+          <div class="flex justify-between"><span class="text-slate-500">Subtotal</span><span class="font-bold" id="sumSubtotal">$0</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">Envío</span><span class="font-bold" id="sumShipping">$0</span></div>
+          <div class="flex justify-between border-t border-slate-200 pt-2 mt-2 text-base"><span class="font-black">Total</span><span class="font-black" id="sumTotal">$0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 BOTONES REQUERIDOS -->
+    <div class="mt-8 grid sm:grid-cols-2 gap-3 no-print">
+      <button onclick="window.print()" class="flex items-center justify-center gap-2 h-14 px-6 bg-primary hover:bg-primary-dark text-white font-black rounded-lg transition-colors">
+        <span class="material-symbols-outlined">print</span>
+        Imprimir comprobante
+      </button>
+      <a href="perfil.html#pedidos" class="flex items-center justify-center gap-2 h-14 px-6 bg-accent hover:bg-black text-white font-black rounded-lg transition-colors">
+        <span class="material-symbols-outlined">receipt_long</span>
+        Ver historial de pedidos
+      </a>
+    </div>
+
+    <!-- Enlace secundario -->
+    <div class="mt-6 text-center no-print">
+      <a href="index.html" class="text-sm text-slate-500 hover:text-primary inline-flex items-center gap-1">
+        <span class="material-symbols-outlined !text-base">arrow_back</span> Seguir comprando
+      </a>
+    </div>
+  </div>
+</main>
+
+<div id="appFooter"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+renderHeader("");
+renderFooter();
+
+const checkout = JSON.parse(sessionStorage.getItem("lumio_last_order") || "null");
+
+if (checkout) {
+  // Orden recién creada
+  document.getElementById("orderId").textContent   = checkout.id;
+  document.getElementById("orderDate").textContent = new Date(checkout.date).toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" });
+  document.getElementById("clientName").textContent  = CURRENT_USER.fullName;
+  document.getElementById("clientEmail").textContent = CURRENT_USER.email;
+  document.getElementById("clientPhone").textContent = CURRENT_USER.phone;
+  document.getElementById("userEmail").textContent   = CURRENT_USER.email;
+  document.getElementById("shipType").textContent   = checkout.shippingLabel;
+  document.getElementById("shipAddr").textContent   = checkout.address;
+  document.getElementById("payMethod").textContent  = checkout.payment;
+  document.getElementById("orderProducts").innerHTML = checkout.items.map(p => `
+    <div class="flex gap-3 items-center">
+      <div class="size-14 rounded-lg overflow-hidden bg-slate-100 shrink-0"><img src="${p.image}" class="w-full h-full object-cover" alt="${p.name}"/></div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-bold line-clamp-1">${p.name}</p>
+        <p class="text-xs text-slate-500">${p.brand} · Cantidad: ${p.qty}</p>
+      </div>
+      <p class="text-sm font-black">${clp(p.price * p.qty)}</p>
+    </div>`).join("");
+  document.getElementById("sumSubtotal").textContent = clp(checkout.subtotal);
+  document.getElementById("sumShipping").textContent = checkout.shipping === 0 ? "Gratis" : clp(checkout.shipping);
+  document.getElementById("sumTotal").textContent    = clp(checkout.total);
+} else {
+  // Fallback: armar comprobante demo con el primer pedido de ORDERS
+  const demo = ORDERS[0];
+  const demoProducts = demo.products.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
+  const sub = demoProducts.reduce((s, p) => s + p.price, 0);
+  document.getElementById("orderId").textContent   = demo.id;
+  document.getElementById("orderDate").textContent = new Date(demo.date).toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" });
+  document.getElementById("clientName").textContent  = CURRENT_USER.fullName;
+  document.getElementById("clientEmail").textContent = CURRENT_USER.email;
+  document.getElementById("clientPhone").textContent = CURRENT_USER.phone;
+  document.getElementById("userEmail").textContent   = CURRENT_USER.email;
+  document.getElementById("shipType").textContent   = "Estándar";
+  document.getElementById("shipAddr").textContent   = demo.address;
+  document.getElementById("payMethod").textContent  = demo.payment;
+  document.getElementById("orderProducts").innerHTML = demoProducts.map(p => `
+    <div class="flex gap-3 items-center">
+      <div class="size-14 rounded-lg overflow-hidden bg-slate-100 shrink-0"><img src="${p.image}" class="w-full h-full object-cover" alt="${p.name}"/></div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-bold line-clamp-1">${p.name}</p>
+        <p class="text-xs text-slate-500">${p.brand}</p>
+      </div>
+      <p class="text-sm font-black">${clp(p.price)}</p>
+    </div>`).join("");
+  document.getElementById("sumSubtotal").textContent = clp(sub);
+  document.getElementById("sumShipping").textContent = demo.shipping === 0 ? "Gratis" : clp(demo.shipping);
+  document.getElementById("sumTotal").textContent    = clp(demo.total);
+}
+</script>
+</body>
+</html>

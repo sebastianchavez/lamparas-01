@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Detalle del pedido · Lumio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#f59e0b", "primary-dark": "#d97706", accent: "#1c1917", "background-light": "#fdfaf6", "background-dark": "#101922" }, fontFamily: { display: ["Inter", "sans-serif"] }, borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" } } } }
+</script>
+<link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body class="font-display bg-background-light">
+<div id="appHeader"></div>
+
+<main class="px-4 sm:px-6 lg:px-8 pt-6 pb-12 max-w-7xl mx-auto">
+  <nav class="flex items-center gap-2 text-sm text-slate-500 mb-4">
+    <a href="index.html" class="hover:text-primary">Inicio</a>
+    <span class="material-symbols-outlined !text-base">chevron_right</span>
+    <a href="perfil.html" class="hover:text-primary">Mi perfil</a>
+    <span class="material-symbols-outlined !text-base">chevron_right</span>
+    <span class="text-slate-900 font-bold" id="bcOrderId">Pedido</span>
+  </nav>
+
+  <a href="perfil.html#pedidos" class="text-sm text-slate-500 hover:text-primary inline-flex items-center gap-1 mb-4">
+    <span class="material-symbols-outlined !text-base">arrow_back</span> Volver a mis pedidos
+  </a>
+
+  <!-- Encabezado -->
+  <div class="bg-white border border-slate-200 rounded-2xl p-6 mb-6">
+    <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+      <div>
+        <p class="text-xs font-black uppercase text-slate-500 mb-1">Pedido</p>
+        <h1 class="text-2xl sm:text-3xl font-black" id="orderId">—</h1>
+        <p class="text-sm text-slate-500 mt-1">Realizado el <span id="orderDate">—</span></p>
+      </div>
+      <div class="text-right">
+        <span id="orderStatus" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold"></span>
+        <p class="text-xs text-slate-500 mt-2">Total <span class="text-lg font-black" id="orderTotal">$0</span></p>
+      </div>
+    </div>
+    <!-- Timeline -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="orderTimeline"></div>
+  </div>
+
+  <div class="grid lg:grid-cols-[1fr_320px] gap-6">
+    <!-- Productos -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-6">
+      <h2 class="text-lg font-black mb-4">Productos del pedido</h2>
+      <div id="orderProducts" class="space-y-3"></div>
+    </div>
+
+    <!-- Aside -->
+    <aside class="space-y-4">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5">
+        <h3 class="text-sm font-black uppercase text-slate-500 mb-3 flex items-center gap-2"><span class="material-symbols-outlined text-primary !text-base">location_on</span>Dirección de envío</h3>
+        <p class="text-sm font-bold" id="shipAddress">—</p>
+        <p class="text-xs text-slate-500 mt-2">Recibido por <span id="receiverName">—</span></p>
+        <p class="text-xs text-slate-500" id="receiverPhone">—</p>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-2xl p-5">
+        <h3 class="text-sm font-black uppercase text-slate-500 mb-3 flex items-center gap-2"><span class="material-symbols-outlined text-primary !text-base">credit_card</span>Pago</h3>
+        <p class="text-sm font-bold capitalize" id="paymentMethod">—</p>
+        <p class="text-xs text-slate-500 mt-2">Estado: <span class="text-green-600 font-bold">Pagado</span></p>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-2xl p-5">
+        <h3 class="text-sm font-black uppercase text-slate-500 mb-3">Resumen</h3>
+        <div class="space-y-1 text-sm">
+          <div class="flex justify-between"><span class="text-slate-500">Subtotal</span><span class="font-bold" id="sumSubtotal">$0</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">Envío</span><span class="font-bold" id="sumShipping">$0</span></div>
+          <div class="flex justify-between border-t border-slate-200 pt-2 mt-2 text-base"><span class="font-black">Total</span><span class="font-black" id="sumTotal">$0</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div id="appFooter"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+renderHeader("");
+renderFooter();
+
+const params = new URLSearchParams(location.search);
+const id = params.get("id");
+let order = ORDERS.find(o => o.id === id);
+
+// Si no existe el id, intentar desde la última compra
+if (!order) {
+  const last = JSON.parse(sessionStorage.getItem("lumio_last_order") || "null");
+  if (last && last.id === id) {
+    order = {
+      id: last.id,
+      date: last.date,
+      status: "pending",
+      total: last.total,
+      shipping: last.shipping,
+      payment: last.payment,
+      address: last.address,
+      products: last.items.map(i => i.id)
+    };
+  }
+}
+
+if (!order) {
+  document.querySelector("main").innerHTML = `
+    <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center max-w-xl mx-auto">
+      <span class="material-symbols-outlined text-7xl text-slate-300">error</span>
+      <h1 class="text-2xl font-black mt-3 mb-1">Pedido no encontrado</h1>
+      <p class="text-slate-500 mb-5">No pudimos encontrar el pedido que buscas.</p>
+      <a href="perfil.html#pedidos" class="inline-flex h-11 px-5 bg-primary text-white font-bold rounded-lg items-center gap-2">Volver a mis pedidos</a>
+    </div>`;
+} else {
+  const status = ORDER_STATUS[order.status];
+  document.title = `Lumio — Pedido ${order.id}`;
+  document.getElementById("bcOrderId").textContent = order.id;
+  document.getElementById("orderId").textContent   = order.id;
+  document.getElementById("orderDate").textContent = new Date(order.date).toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" });
+  document.getElementById("orderTotal").textContent = clp(order.total);
+  document.getElementById("orderStatus").className = `inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold ${status.class}`;
+  document.getElementById("orderStatus").innerHTML = `<span class="material-symbols-outlined !text-base">${status.icon}</span>${status.label}`;
+
+  // Timeline según estado
+  const steps = [
+    { key: "received", label: "Recibido",     icon: "inventory" },
+    { key: "preparing",label: "Preparando",   icon: "package_2" },
+    { key: "shipped",  label: "En camino",    icon: "local_shipping" },
+    { key: "delivered",label: "Entregado",    icon: "check_circle" }
+  ];
+  const orderSteps = { pending: 0, shipped: 2, delivered: 3 };
+  const currentStep = orderSteps[order.status] ?? 0;
+  document.getElementById("orderTimeline").innerHTML = steps.map((s, i) => {
+    const done = i <= currentStep;
+    return `
+      <div class="flex items-center gap-2 p-3 rounded-lg border ${done ? "border-primary bg-primary/5" : "border-slate-200 bg-slate-50"}">
+        <span class="size-8 rounded-full ${done ? "bg-primary text-white" : "bg-slate-200 text-slate-400"} flex items-center justify-center">
+          <span class="material-symbols-outlined !text-base">${s.icon}</span>
+        </span>
+        <div>
+          <p class="text-xs ${done ? "text-primary font-black" : "text-slate-500 font-bold"}">${s.label}</p>
+        </div>
+      </div>`;
+  }).join("");
+
+  // Productos
+  const items = order.products.map(pid => PRODUCTS.find(p => p.id === pid)).filter(Boolean);
+  document.getElementById("orderProducts").innerHTML = items.map(p => `
+    <div class="flex gap-4 items-center border border-slate-200 rounded-xl p-3">
+      <a href="producto.html?id=${p.id}" class="size-20 rounded-lg overflow-hidden bg-slate-100 shrink-0 block">
+        <img src="${p.image}" class="w-full h-full object-cover" alt="${p.name}"/>
+      </a>
+      <div class="flex-1 min-w-0">
+        <a href="producto.html?id=${p.id}" class="font-bold text-sm hover:text-primary line-clamp-1">${p.name}</a>
+        <p class="text-xs text-slate-500">${p.brand} · ${clp(p.price)}</p>
+        <a href="resena.html?id=${p.id}" class="text-xs text-primary font-bold mt-1 inline-flex items-center gap-1"><span class="material-symbols-outlined !text-xs">rate_review</span>Escribir reseña</a>
+      </div>
+      <a href="producto.html?id=${p.id}" class="text-slate-400 hover:text-primary" title="Ver producto">
+        <span class="material-symbols-outlined">arrow_forward</span>
+      </a>
+    </div>
+  `).join("");
+
+  // Aside
+  document.getElementById("shipAddress").textContent  = order.address;
+  document.getElementById("receiverName").textContent = CURRENT_USER.fullName;
+  document.getElementById("receiverPhone").textContent = CURRENT_USER.phone;
+  document.getElementById("paymentMethod").textContent = order.payment;
+
+  const sub = order.total - order.shipping;
+  document.getElementById("sumSubtotal").textContent = clp(sub);
+  document.getElementById("sumShipping").textContent = order.shipping === 0 ? "Gratis" : clp(order.shipping);
+  document.getElementById("sumTotal").textContent    = clp(order.total);
+}
+</script>
+</body>
+</html>

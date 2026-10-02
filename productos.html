@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Catálogo · Lumio — Tienda de Lámparas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#f59e0b", "primary-dark": "#d97706", accent: "#1c1917", "background-light": "#fdfaf6", "background-dark": "#101922" }, fontFamily: { display: ["Inter", "sans-serif"] }, borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" } } } }
+</script>
+<link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body class="font-display bg-background-light">
+<div id="appHeader" data-active="productos"></div>
+
+<main class="px-4 sm:px-6 lg:px-8 pt-6 pb-12">
+  <!-- Header de catálogo -->
+  <div class="mb-6">
+    <nav class="flex items-center gap-2 text-sm text-slate-500 mb-4">
+      <a href="index.html" class="hover:text-primary">Inicio</a>
+      <span class="material-symbols-outlined !text-base">chevron_right</span>
+      <span class="text-slate-900 font-bold">Catálogo</span>
+    </nav>
+    <div class="flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-black text-slate-900">Todas las lámparas</h1>
+        <p class="text-slate-600 mt-1" id="resultCount">Cargando…</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label class="text-sm text-slate-600 font-bold">Ordenar:</label>
+        <select id="sortSelect" class="h-10 px-3 rounded-lg border-slate-200 text-sm font-bold focus:border-primary focus:ring-primary">
+          <option value="featured">Destacados</option>
+          <option value="priceAsc">Menor precio</option>
+          <option value="priceDesc">Mayor precio</option>
+          <option value="rating">Mejor valorados</option>
+          <option value="name">A - Z</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-[280px_1fr] gap-6">
+    <!-- FILTROS -->
+    <aside class="bg-white border border-slate-200 rounded-xl p-5 h-fit lg:sticky lg:top-24">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-base font-black flex items-center gap-2"><span class="material-symbols-outlined text-primary">tune</span>Filtros</h2>
+        <button id="clearFilters" class="text-xs text-slate-500 hover:text-primary font-bold">Limpiar</button>
+      </div>
+
+      <!-- Categoría -->
+      <div class="mb-5">
+        <h3 class="text-xs font-black uppercase text-slate-500 mb-3">Categoría</h3>
+        <div class="space-y-2" id="catFilters">
+          <label class="flex items-center gap-2 text-sm cursor-pointer">
+            <input type="radio" name="cat" value="" class="text-primary focus:ring-primary" checked/>
+            <span>Todas</span>
+          </label>
+          ${""}
+        </div>
+      </div>
+
+      <!-- Precio -->
+      <div class="mb-5">
+        <h3 class="text-xs font-black uppercase text-slate-500 mb-3">Precio máximo</h3>
+        <input id="priceMax" type="range" min="9990" max="99990" step="1000" value="99990" class="w-full accent-primary"/>
+        <div class="flex justify-between text-xs text-slate-500 mt-1">
+          <span>$9.990</span>
+          <span class="font-bold text-slate-900" id="priceMaxLabel">$99.990</span>
+        </div>
+      </div>
+
+      <!-- Marca -->
+      <div class="mb-5">
+        <h3 class="text-xs font-black uppercase text-slate-500 mb-3">Marca</h3>
+        <div class="space-y-2" id="brandFilters"></div>
+      </div>
+
+      <!-- Rating -->
+      <div>
+        <h3 class="text-xs font-black uppercase text-slate-500 mb-3">Valoración mínima</h3>
+        <div class="space-y-2" id="ratingFilters">
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="minRating" value="0" class="text-primary focus:ring-primary" checked/><span>Todas</span></label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="minRating" value="4" class="text-primary focus:ring-primary"/><span class="flex text-yellow-400 material-symbols-outlined">star</span><span>4+ estrellas</span></label>
+          <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="radio" name="minRating" value="4.5" class="text-primary focus:ring-primary"/><span class="flex text-yellow-400 material-symbols-outlined">star</span><span>4.5+ estrellas</span></label>
+        </div>
+      </div>
+    </aside>
+
+    <!-- GRILLA -->
+    <section>
+      <div id="productsGrid" class="grid grid-cols-2 lg:grid-cols-3 gap-4"></div>
+      <div id="emptyState" class="hidden bg-white border border-slate-200 rounded-xl p-12 text-center">
+        <span class="material-symbols-outlined text-6xl text-slate-300">search_off</span>
+        <h3 class="text-xl font-black mt-3 mb-1">No encontramos productos</h3>
+        <p class="text-slate-500 text-sm">Prueba ajustando los filtros para ampliar la búsqueda.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div id="appFooter"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+renderHeader("productos");
+renderFooter();
+
+// Estado
+const urlCat = new URLSearchParams(location.search).get("cat") || "";
+const state = {
+  cat: urlCat,
+  priceMax: 99990,
+  brand: "",
+  minRating: 0,
+  sort: "featured"
+};
+
+// Render categorías
+const catWrap = document.getElementById("catFilters");
+catWrap.innerHTML = `
+  <label class="flex items-center gap-2 text-sm cursor-pointer">
+    <input type="radio" name="cat" value="" class="text-primary focus:ring-primary" ${state.cat === "" ? "checked" : ""}/>
+    <span>Todas</span>
+  </label>
+  ${CATEGORIES.map(c => `
+    <label class="flex items-center gap-2 text-sm cursor-pointer capitalize">
+      <input type="radio" name="cat" value="${c.key}" class="text-primary focus:ring-primary" ${state.cat === c.key ? "checked" : ""}/>
+      <span>${c.label}</span>
+    </label>
+  `).join("")}
+`;
+
+// Render marcas
+const brands = [...new Set(PRODUCTS.map(p => p.brand))].sort();
+document.getElementById("brandFilters").innerHTML = `
+  <label class="flex items-center gap-2 text-sm cursor-pointer">
+    <input type="radio" name="brand" value="" class="text-primary focus:ring-primary" checked/>
+    <span>Todas</span>
+  </label>
+  ${brands.map(b => `
+    <label class="flex items-center gap-2 text-sm cursor-pointer">
+      <input type="radio" name="brand" value="${b}" class="text-primary focus:ring-primary"/>
+      <span>${b}</span>
+    </label>
+  `).join("")}
+`;
+
+function applyFilters() {
+  let res = PRODUCTS.slice();
+  if (state.cat)      res = res.filter(p => p.category === state.cat);
+  if (state.brand)    res = res.filter(p => p.brand === state.brand);
+  if (state.minRating) res = res.filter(p => p.rating >= state.minRating);
+  res = res.filter(p => p.price <= state.priceMax);
+
+  switch (state.sort) {
+    case "priceAsc":  res.sort((a, b) => a.price - b.price); break;
+    case "priceDesc": res.sort((a, b) => b.price - a.price); break;
+    case "rating":    res.sort((a, b) => b.rating - a.rating); break;
+    case "name":      res.sort((a, b) => a.name.localeCompare(b.name)); break;
+    default: res.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+  }
+
+  const grid = document.getElementById("productsGrid");
+  const empty = document.getElementById("emptyState");
+  if (res.length === 0) {
+    grid.innerHTML = "";
+    empty.classList.remove("hidden");
+  } else {
+    empty.classList.add("hidden");
+    grid.innerHTML = res.map(productCardHTML).join("");
+  }
+  document.getElementById("resultCount").textContent = `${res.length} producto${res.length === 1 ? "" : "s"} encontrado${res.length === 1 ? "" : "s"}`;
+}
+
+document.querySelectorAll('input[name="cat"]').forEach(el => el.addEventListener("change", e => { state.cat = e.target.value; applyFilters(); }));
+document.querySelectorAll('input[name="brand"]').forEach(el => el.addEventListener("change", e => { state.brand = e.target.value; applyFilters(); }));
+document.querySelectorAll('input[name="minRating"]').forEach(el => el.addEventListener("change", e => { state.minRating = parseFloat(e.target.value); applyFilters(); }));
+document.getElementById("priceMax").addEventListener("input", e => {
+  state.priceMax = parseInt(e.target.value);
+  document.getElementById("priceMaxLabel").textContent = clp(state.priceMax);
+  applyFilters();
+});
+document.getElementById("sortSelect").addEventListener("change", e => { state.sort = e.target.value; applyFilters(); });
+document.getElementById("clearFilters").addEventListener("click", () => {
+  state.cat = ""; state.brand = ""; state.minRating = 0; state.priceMax = 99990; state.sort = "featured";
+  document.querySelectorAll('input[name="cat"]')[0].checked = true;
+  document.querySelectorAll('input[name="brand"]')[0].checked = true;
+  document.querySelectorAll('input[name="minRating"]')[0].checked = true;
+  document.getElementById("priceMax").value = 99990;
+  document.getElementById("priceMaxLabel").textContent = clp(99990);
+  document.getElementById("sortSelect").value = "featured";
+  applyFilters();
+});
+
+applyFilters();
+</script>
+</body>
+</html>

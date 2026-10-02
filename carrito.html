@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Carrito · Lumio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#f59e0b", "primary-dark": "#d97706", accent: "#1c1917", "background-light": "#fdfaf6", "background-dark": "#101922" }, fontFamily: { display: ["Inter", "sans-serif"] }, borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" } } } }
+</script>
+<link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body class="font-display bg-background-light">
+<div id="appHeader"></div>
+
+<main class="px-4 sm:px-6 lg:px-8 pt-6 pb-12">
+  <nav class="flex items-center gap-2 text-sm text-slate-500 mb-4">
+    <a href="index.html" class="hover:text-primary">Inicio</a>
+    <span class="material-symbols-outlined !text-base">chevron_right</span>
+    <span class="text-slate-900 font-bold">Carrito</span>
+  </nav>
+
+  <h1 class="text-3xl sm:text-4xl font-black text-slate-900 mb-6">Tu carrito</h1>
+
+  <!-- Estado vacío -->
+  <div id="emptyCart" class="hidden bg-white border border-slate-200 rounded-2xl p-12 text-center">
+    <span class="material-symbols-outlined text-7xl text-slate-300">shopping_cart</span>
+    <h2 class="text-2xl font-black mt-3 mb-1">Tu carrito está vacío</h2>
+    <p class="text-slate-500 mb-6">Aún no has agregado lámparas. Explora nuestro catálogo y encuentra la ideal.</p>
+    <a href="productos.html" class="inline-flex items-center gap-2 h-12 px-6 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg transition-colors">
+      <span class="material-symbols-outlined">storefront</span>
+      Ir al catálogo
+    </a>
+  </div>
+
+  <!-- Carrito con productos -->
+  <div id="cartContent" class="grid lg:grid-cols-[1fr_360px] gap-6">
+    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-200 flex items-center justify-between">
+        <h2 class="font-black">Productos (<span id="cartCountLabel">0</span>)</h2>
+        <button id="clearCartBtn" class="text-sm text-slate-500 hover:text-red-600 font-bold flex items-center gap-1">
+          <span class="material-symbols-outlined !text-base">delete_sweep</span>Vaciar carrito
+        </button>
+      </div>
+      <div id="cartItems" class="divide-y divide-slate-200"></div>
+    </div>
+
+    <aside class="bg-white border border-slate-200 rounded-2xl p-6 h-fit lg:sticky lg:top-24">
+      <h2 class="font-black text-lg mb-4">Resumen del pedido</h2>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between"><span class="text-slate-500">Subtotal</span><span class="font-bold" id="sumSubtotal">$0</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Envío</span><span class="font-bold text-slate-900" id="sumShipping">Calculando…</span></div>
+        <div class="flex justify-between text-green-700" id="sumDiscountRow" style="display:none"><span>Descuento</span><span class="font-bold" id="sumDiscount">-$0</span></div>
+      </div>
+      <div class="border-t border-slate-200 mt-4 pt-4 flex justify-between items-baseline">
+        <span class="font-black">Total</span>
+        <span class="text-2xl font-black" id="sumTotal">$0</span>
+      </div>
+      <a href="pago.html" id="checkoutBtn" class="mt-5 w-full h-12 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors">
+        <span class="material-symbols-outlined">credit_card</span>
+        Ir a pagar
+      </a>
+      <a href="productos.html" class="mt-3 w-full h-11 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-lg flex items-center justify-center gap-2 transition-colors">
+        <span class="material-symbols-outlined">arrow_back</span>
+        Seguir comprando
+      </a>
+      <div class="mt-5 p-3 bg-amber-50 rounded-lg flex items-start gap-2 text-xs text-amber-900">
+        <span class="material-symbols-outlined !text-base text-primary mt-0.5">local_shipping</span>
+        <span>Envío gratis sobre $60.000. Despacho 24/48h en Santiago.</span>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div id="appFooter"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+renderHeader("");
+renderFooter();
+
+function renderCart() {
+  const cart = getCart();
+  const empty = document.getElementById("emptyCart");
+  const content = document.getElementById("cartContent");
+
+  if (cart.length === 0) {
+    empty.classList.remove("hidden");
+    content.classList.add("hidden");
+    return;
+  }
+  empty.classList.add("hidden");
+  content.classList.remove("hidden");
+
+  document.getElementById("cartCountLabel").textContent = cartCount();
+
+  const itemsHTML = cart.map(item => {
+    const p = PRODUCTS.find(x => x.id === item.productId);
+    if (!p) return "";
+    const subtotal = p.price * item.qty;
+    return `
+      <div class="p-5 flex gap-4">
+        <a href="producto.html?id=${p.id}" class="size-24 rounded-lg overflow-hidden bg-slate-100 shrink-0 block">
+          <img src="${p.image}" class="w-full h-full object-cover" alt="${p.name}"/>
+        </a>
+        <div class="flex-1 min-w-0">
+          <a href="producto.html?id=${p.id}" class="font-bold text-slate-900 text-sm hover:text-primary line-clamp-2 leading-tight">${p.name}</a>
+          <p class="text-xs text-slate-500 mt-1">Marca: <span class="font-bold text-slate-700">${p.brand}</span></p>
+          <p class="text-xs text-slate-500 capitalize">${p.category}</p>
+          <div class="flex items-center justify-between gap-3 mt-3">
+            <div class="flex items-center bg-slate-100 rounded-lg">
+              <button onclick="changeQty(${p.id}, -1)" class="size-8 hover:bg-slate-200 rounded-l-lg"><span class="material-symbols-outlined !text-base">remove</span></button>
+              <input value="${item.qty}" readonly class="w-10 text-center bg-transparent font-bold text-sm border-none focus:ring-0"/>
+              <button onclick="changeQty(${p.id}, +1)" class="size-8 hover:bg-slate-200 rounded-r-lg"><span class="material-symbols-outlined !text-base">add</span></button>
+            </div>
+            <div class="text-right">
+              <p class="text-base font-black">${clp(subtotal)}</p>
+              <p class="text-xs text-slate-400">${clp(p.price)} c/u</p>
+            </div>
+            <button onclick="removeItem(${p.id})" class="text-slate-400 hover:text-red-600" title="Eliminar">
+              <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </div>
+      </div>`;
+  }).join("");
+
+  document.getElementById("cartItems").innerHTML = itemsHTML;
+
+  const sub = cartSubtotal();
+  const ship = sub >= 60000 || sub === 0 ? 0 : 3990;
+  const total = sub + ship;
+  document.getElementById("sumSubtotal").textContent = clp(sub);
+  document.getElementById("sumShipping").textContent = ship === 0 ? "Gratis" : clp(ship);
+  document.getElementById("sumTotal").textContent = clp(total);
+
+  if (sub >= 60000) {
+    document.getElementById("sumShipping").classList.add("text-green-600");
+  }
+}
+
+window.changeQty = function(productId, delta) {
+  const cart = getCart();
+  const item = cart.find(i => i.productId === productId);
+  if (!item) return;
+  const p = PRODUCTS.find(x => x.id === productId);
+  const newQty = Math.max(1, Math.min(p.stock, item.qty + delta));
+  item.qty = newQty;
+  saveCart(cart);
+  refreshCartBadge();
+  renderCart();
+};
+
+window.removeItem = function(productId) {
+  removeFromCart(productId);
+  renderCart();
+};
+
+document.getElementById("clearCartBtn").addEventListener("click", () => {
+  if (confirm("¿Vaciar el carrito?")) {
+    clearCart();
+    renderCart();
+  }
+});
+
+renderCart();
+</script>
+</body>
+</html>

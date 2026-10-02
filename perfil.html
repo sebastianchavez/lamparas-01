@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mi perfil · Lumio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = { darkMode: "class", theme: { extend: { colors: { primary: "#f59e0b", "primary-dark": "#d97706", accent: "#1c1917", "background-light": "#fdfaf6", "background-dark": "#101922" }, fontFamily: { display: ["Inter", "sans-serif"] }, borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" } } } }
+</script>
+<link rel="stylesheet" href="assets/css/styles.css"/>
+</head>
+<body class="font-display bg-background-light">
+<div id="appHeader"></div>
+
+<main class="px-4 sm:px-6 lg:px-8 pt-6 pb-12 max-w-7xl mx-auto">
+  <nav class="flex items-center gap-2 text-sm text-slate-500 mb-4">
+    <a href="index.html" class="hover:text-primary">Inicio</a>
+    <span class="material-symbols-outlined !text-base">chevron_right</span>
+    <span class="text-slate-900 font-bold">Mi perfil</span>
+  </nav>
+
+  <!-- Header del perfil -->
+  <div class="bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-200 rounded-2xl p-6 sm:p-8 mb-6 flex flex-wrap items-center gap-6">
+    <div class="size-20 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-black shadow-lg" id="userAvatar">CS</div>
+    <div class="flex-1 min-w-0">
+      <h1 class="text-2xl sm:text-3xl font-black" id="userName">Camila Soto</h1>
+      <p class="text-slate-600" id="userEmail">cliente@lumio.cl</p>
+      <p class="text-sm text-slate-500 mt-1">Cliente desde <span id="userSince">2023</span> · <span class="text-primary font-bold">Nivel Iluminación</span></p>
+    </div>
+    <a href="login.html" class="h-10 px-4 rounded-lg border border-slate-200 bg-white text-sm font-bold hover:bg-slate-50 inline-flex items-center gap-2">
+      <span class="material-symbols-outlined !text-base">logout</span>
+      Cerrar sesión
+    </a>
+  </div>
+
+  <!-- Tabs -->
+  <div class="border-b border-slate-200 mb-6 overflow-x-auto">
+    <nav class="flex gap-1" id="profileTabs">
+      <button data-tab="pedidos" class="tab-btn px-4 py-3 text-sm font-bold border-b-2 border-primary text-primary whitespace-nowrap">
+        <span class="material-symbols-outlined !text-base align-middle mr-1">receipt_long</span>Pedidos
+      </button>
+      <button data-tab="datos" class="tab-btn px-4 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-900 whitespace-nowrap">
+        <span class="material-symbols-outlined !text-base align-middle mr-1">person</span>Mis datos
+      </button>
+      <button data-tab="direcciones" class="tab-btn px-4 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-900 whitespace-nowrap">
+        <span class="material-symbols-outlined !text-base align-middle mr-1">location_on</span>Direcciones
+      </button>
+      <button data-tab="seguridad" class="tab-btn px-4 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-slate-900 whitespace-nowrap">
+        <span class="material-symbols-outlined !text-base align-middle mr-1">lock</span>Seguridad
+      </button>
+    </nav>
+  </div>
+
+  <!-- TAB: Pedidos -->
+  <section data-pane="pedidos" class="tab-pane" id="pedidos">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-black">Historial de pedidos</h2>
+      <span class="text-xs text-slate-500" id="ordersCount">—</span>
+    </div>
+    <div id="ordersList" class="space-y-3"></div>
+  </section>
+
+  <!-- TAB: Mis datos -->
+  <section data-pane="datos" class="tab-pane hidden">
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 max-w-2xl">
+      <h2 class="text-lg font-black mb-1">Información personal</h2>
+      <p class="text-sm text-slate-500 mb-5">Actualiza tus datos de contacto.</p>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">Nombre</label>
+          <input value="" id="inputName" class="w-full h-11 px-3 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+        </div>
+        <div>
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">Apellido</label>
+          <input value="" id="inputLast" class="w-full h-11 px-3 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+        </div>
+        <div>
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">RUT</label>
+          <input value="" id="inputRut" class="w-full h-11 px-3 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+        </div>
+        <div>
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">Email</label>
+          <input value="" id="inputEmail" class="w-full h-11 px-3 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">Teléfono</label>
+          <input value="" id="inputPhone" class="w-full h-11 px-3 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+        </div>
+      </div>
+      <div class="flex justify-end mt-5">
+        <button class="h-11 px-6 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg" onclick="toast('Datos guardados correctamente','check_circle')">Guardar cambios</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB: Direcciones -->
+  <section data-pane="direcciones" class="tab-pane hidden">
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 max-w-2xl">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="text-lg font-black">Mis direcciones</h2>
+          <p class="text-sm text-slate-500">Administra las direcciones de envío guardadas.</p>
+        </div>
+        <button class="h-10 px-4 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-lg flex items-center gap-1" onclick="toast('Dirección agregada','check_circle')">
+          <span class="material-symbols-outlined !text-base">add</span> Nueva
+        </button>
+      </div>
+      <div class="space-y-3">
+        <div class="border border-slate-200 rounded-xl p-4 flex gap-4">
+          <span class="material-symbols-outlined text-primary">location_on</span>
+          <div class="flex-1">
+            <p class="font-bold text-sm">Casa <span class="text-xs font-normal text-slate-500 ml-1">(Predeterminada)</span></p>
+            <p class="text-sm text-slate-600">Av. Las Condes 4520, Of. 12, Las Condes, Región Metropolitana</p>
+          </div>
+          <button class="text-slate-400 hover:text-red-600"><span class="material-symbols-outlined">delete</span></button>
+        </div>
+        <div class="border border-slate-200 rounded-xl p-4 flex gap-4">
+          <span class="material-symbols-outlined text-primary">apartment</span>
+          <div class="flex-1">
+            <p class="font-bold text-sm">Oficina</p>
+            <p class="text-sm text-slate-600">Av. Apoquindo 4711, Piso 8, Las Condes, Región Metropolitana</p>
+          </div>
+          <button class="text-slate-400 hover:text-red-600"><span class="material-symbols-outlined">delete</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB: Seguridad -->
+  <section data-pane="seguridad" class="tab-pane hidden">
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 max-w-2xl">
+      <h2 class="text-lg font-black mb-1">Cambiar contraseña</h2>
+      <p class="text-sm text-slate-500 mb-5">Te recomendamos usar una contraseña segura.</p>
+      <div class="space-y-4">
+        <div>
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">Contraseña actual</label>
+          <input type="password" class="w-full h-11 px-3 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+        </div>
+        <div>
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">Nueva contraseña</label>
+          <input type="password" class="w-full h-11 px-3 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+        </div>
+        <div>
+          <label class="text-xs font-black uppercase text-slate-500 mb-1 block">Repetir nueva contraseña</label>
+          <input type="password" class="w-full h-11 px-3 rounded-lg border-slate-200 focus:border-primary focus:ring-primary"/>
+        </div>
+      </div>
+      <div class="flex justify-end mt-5 gap-2">
+        <a href="recuperar.html" class="h-11 px-4 text-sm font-bold text-slate-500 hover:text-primary inline-flex items-center gap-1">¿La olvidaste?</a>
+        <button class="h-11 px-6 bg-primary hover:bg-primary-dark text-white font-bold rounded-lg" onclick="toast('Contraseña actualizada','check_circle')">Actualizar contraseña</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="appFooter"></div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+renderHeader("");
+renderFooter();
+
+// Header usuario
+document.getElementById("userAvatar").textContent = CURRENT_USER.initials;
+document.getElementById("userName").textContent   = CURRENT_USER.fullName;
+document.getElementById("userEmail").textContent  = CURRENT_USER.email;
+document.getElementById("userSince").textContent  = CURRENT_USER.memberSince;
+
+// Tabs
+document.querySelectorAll("#profileTabs .tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#profileTabs .tab-btn").forEach(b => { b.classList.remove("border-primary", "text-primary"); b.classList.add("border-transparent", "text-slate-500"); });
+    btn.classList.add("border-primary", "text-primary");
+    document.querySelectorAll(".tab-pane").forEach(p => p.classList.add("hidden"));
+    document.querySelector(`[data-pane="${btn.dataset.tab}"]`).classList.remove("hidden");
+  });
+});
+
+// Si la URL tiene #pedidos, activa el tab de pedidos
+if (location.hash === "#pedidos") {
+  document.querySelector('#profileTabs [data-tab="pedidos"]').click();
+}
+
+// Pre-fill datos
+document.getElementById("inputName").value  = CURRENT_USER.name;
+document.getElementById("inputLast").value  = CURRENT_USER.lastName;
+document.getElementById("inputRut").value   = CURRENT_USER.rut;
+document.getElementById("inputEmail").value = CURRENT_USER.email;
+document.getElementById("inputPhone").value = CURRENT_USER.phone;
+
+// Lista de pedidos
+document.getElementById("ordersCount").textContent = ORDERS.length + " pedidos en total";
+document.getElementById("ordersList").innerHTML = ORDERS.map(o => {
+  const status = ORDER_STATUS[o.status];
+  const itemCount = o.products.length;
+  const firstProduct = PRODUCTS.find(p => p.id === o.products[0]);
+  return `
+    <a href="pedido.html?id=${o.id}" class="block bg-white border border-slate-200 rounded-xl p-4 hover:border-primary hover:shadow-md transition-all">
+      <div class="flex flex-wrap gap-4 items-center">
+        ${firstProduct ? productMiniCardHTML(firstProduct) : ""}
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-wrap items-center gap-2 mb-1">
+            <span class="font-black text-sm">${o.id}</span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${status.class}">
+              <span class="material-symbols-outlined !text-xs">${status.icon}</span>
+              ${status.label}
+            </span>
+          </div>
+          <p class="text-xs text-slate-500">${new Date(o.date).toLocaleDateString("es-CL", { year: "numeric", month: "long", day: "numeric" })} · ${itemCount} ${itemCount === 1 ? "producto" : "productos"} · ${o.payment}</p>
+        </div>
+        <div class="text-right">
+          <p class="text-base font-black">${clp(o.total)}</p>
+          <p class="text-xs text-primary font-bold flex items-center gap-1 justify-end">Ver detalle <span class="material-symbols-outlined !text-xs">arrow_forward</span></p>
+        </div>
+      </div>
+    </a>`;
+}).join("");
+</script>
+</body>
+</html>
